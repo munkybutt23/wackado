@@ -1,13 +1,9 @@
 html {
-  /*background: url('./assets/background.png') no-repeat center center fixed;*/
   background: url('https://github.com/Thinkful-Ed/js-dev-final-capstone-starter/blob/main/assets/background.png?raw=true') no-repeat center center fixed;
-  box-sizing: border-box;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
   background-size: cover;
-  z-index:0;
+  box-sizing: border-box;
   overflow: hidden;
+  z-index: 0;
 }
 
 h1 {
@@ -26,12 +22,15 @@ h2 {
 }
 
 #start {
-    text-align: center;
-    font-size: 30px;
+  text-align: center;
+  font-size: 30px;
+  cursor: pointer;
+  margin: 20px auto;
+  display: block;
 }
 
-#timer{
-    color: white;
+#timer {
+  color: white;
 }
 
 .grid {
@@ -40,7 +39,7 @@ h2 {
   display: flex;
   flex-wrap: wrap;
   margin: 0 auto;
-  /*cursor: url('./assets/mallet.png'), pointer;*/
+  cursor: pointer; /* optional: makes cursor pointer when hovering holes */
 }
 
 .hole {
@@ -49,34 +48,33 @@ h2 {
   position: relative;
 }
 
+/* Hole image */
 .hole:after {
+  content: '';
   display: block;
-  /*background: url("./assets/hole.png") bottom center no-repeat;*/
-  background: url("https://github.com/Thinkful-Ed/js-dev-final-capstone-starter/blob/main/assets/hole.png?raw=true") bottom center no-repeat;
-  background-size:contain;
-  content:'';
-  width: 100%;
-  height: 100%;
   position: absolute;
   bottom: -40%;
-  z-index: 2;
-  pointer-events:none;
-}
-
-.mole {
-  /*background:url('./assets/mole.png') bottom center no-repeat;*/
-  background:url('https://github.com/Thinkful-Ed/js-dev-final-capstone-starter/blob/main/assets/mole.png?raw=true') bottom center no-repeat;
-  background-size: 40%;
-  position: absolute;
-  top: 100%;
   width: 100%;
   height: 100%;
-  /*transition: transform 0.5s;*/
-  transition: all 1s;
-  pointer-events:auto;
+  background: url("https://github.com/Thinkful-Ed/js-dev-final-capstone-starter/blob/main/assets/hole.png?raw=true") bottom center no-repeat;
+  background-size: contain;
+  pointer-events: none;
+  z-index: 2;
 }
 
-.hole.show .mole {
-  top: 0;
-  /*transform: scale(1.1);*/
+/* Mole styles */
+.mole {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 100%;          /* initially hidden below hole */
+  background: url('https://github.com/Thinkful-Ed/js-dev-final-capstone-starter/blob/main/assets/mole.png?raw=true') bottom center no-repeat;
+  background-size: 40%;
+  transition: top 0.4s ease-in-out;
+  pointer-events: auto;
+  z-index: 3;
 }
+
+/* Show mole by moving it up */
+.hole.show .mole {
+  to
