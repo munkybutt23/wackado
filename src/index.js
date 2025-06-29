@@ -7,17 +7,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const difficultySelector = document.querySelector("#difficulty");
 
   let lastHole = null;
-  let time = 10; // game duration in seconds
+  let time = 10; // Game duration in seconds
   let score = 0;
   let timerInterval = null;
   let moleTimeout = null;
 
-  // Generate a random integer between min and max inclusive
+  // Utility: get random integer inclusive
   function randomInteger(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  // Choose a hole randomly but not the same as last time
+  // Pick a hole randomly that’s not the same as last
   function chooseHole() {
     let idx;
     let hole;
@@ -29,18 +29,18 @@ document.addEventListener("DOMContentLoaded", () => {
     return hole;
   }
 
-  // Determine mole visible duration based on difficulty
+  // Determine mole visible duration by difficulty
   function getDelay() {
     const difficulty = difficultySelector.value;
     if (difficulty === "easy") return 1500;
     if (difficulty === "normal") return 1000;
     if (difficulty === "hard") return randomInteger(600, 1200);
-    return 1000; // default fallback
+    return 1000;
   }
 
-  // Show mole in a hole and hide after delay
+  // Show mole in hole, then hide after delay, then show next mole
   function showMole() {
-    if (time <= 0) return; // stop if game over
+    if (time <= 0) return; // Stop if game over
 
     const hole = chooseHole();
     hole.classList.add("show");
@@ -49,11 +49,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     moleTimeout = setTimeout(() => {
       hole.classList.remove("show");
-      showMole(); // Show another mole
+      showMole(); // Show next mole recursively
     }, delay);
   }
 
-  // Update timer every second
+  // Update timer display and decrease time every second
   function updateTimer() {
     if (time > 0) {
       time--;
@@ -63,14 +63,55 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Start the game timer
+  // Start countdown timer interval
   function startTimer() {
     timerDisplay.textContent = time;
     timerInterval = setInterval(updateTimer, 1000);
   }
 
-  // Stop the game and clear intervals/timeouts
+  // Stop game: clear intervals and timeouts, hide moles, alert final score
   function stopGame() {
     clearInterval(timerInterval);
     clearTimeout(moleTimeout);
-    holes.forEach(hole => hole.classList.remove("show"
+    holes.forEach(hole => hole.classList.remove("show"));
+    alert(`Game over! Your score is ${score}`);
+  }
+
+  // Reset score to zero and update display
+  function resetScore() {
+    score = 0;
+    scoreDisplay.textContent = score;
+  }
+
+  // Handle mole clicks: increase score, update display, hide mole, animate hit
+  function whack(event) {
+    if (!event.target.classList.contains("mole")) return;
+    if (!event.target.parentElement.classList.contains("show")) return;
+
+    score++;
+    scoreDisplay.textContent = score;
+
+    event.target.parentElement.classList.remove("show");
+
+    // Hit animation
+    event.target.classList.add("hit");
+    setTimeout(() => event.target.classList.remove("hit"), 150);
+  }
+
+  // Start game handler: reset everything, start timer and mole appearances
+  function startGame() {
+    resetScore();
+    time = 10;
+    timerDisplay.textContent = time;
+
+    clearInterval(timerInterval);
+    clearTimeout(moleTimeout);
+
+    startTimer();
+    showMole();
+  }
+
+  // Attach event listeners
+  moles.forEach(mole => mole.addEventListener("click", whack));
+  startButton.addEventListener("click", startGame);
+});
