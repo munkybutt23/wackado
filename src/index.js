@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const startButton = document.querySelector("#start");
   const scoreDisplay = document.querySelector("#score");
   const timerDisplay = document.querySelector("#timer");
+  const difficultySelector = document.querySelector("#difficulty");
 
   let lastHole = null;
   let time = 10; // seconds
@@ -15,11 +16,18 @@ document.addEventListener("DOMContentLoaded", () => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  function chooseHole() {
+  function setDelay(difficulty) {
+    if (difficulty === "easy") return 1500;
+    if (difficulty === "normal") return 1000;
+    if (difficulty === "hard") return randomInteger(600, 1200);
+    return 1000; // fallback default
+  }
+
+  function chooseHole(holes) {
     const index = randomInteger(0, holes.length - 1);
     const hole = holes[index];
     if (hole === lastHole) {
-      return chooseHole(); // prevent same hole twice
+      return chooseHole(holes); // prevent same hole twice
     }
     lastHole = hole;
     return hole;
@@ -28,10 +36,12 @@ document.addEventListener("DOMContentLoaded", () => {
   function showMole() {
     if (time <= 0) return; // stop showing if time is up
 
-    const hole = chooseHole();
+    const hole = chooseHole(holes);
     hole.classList.add("show");
 
-    const visibleTime = randomInteger(600, 1200);
+    const difficulty = difficultySelector.value;
+    const visibleTime = setDelay(difficulty);
+
     moleTimer = setTimeout(() => {
       hole.classList.remove("show");
       showMole();
