@@ -1,14 +1,16 @@
-html {
-  background: url('https://github.com/Thinkful-Ed/js-dev-final-capstone-starter/blob/main/assets/background.png?raw=true') no-repeat center center fixed;
-  background-size: cover;
-  box-sizing: border-box;
-  overflow: hidden;
-  z-index: 0;
+/* Base styles */
+html, body {
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
+  background: url('https://github.com/Thinkful-Ed/js-dev-final-capstone-starter/blob/main/assets/background.png?raw=true') no-repeat center center fixed;
+  background-size: cover;
+  box-sizing: border-box;
+  overflow-y: auto;
+  height: 100%;
 }
 
+/* Headings */
 h1 {
   text-align: center;
   font-size: 90px;
@@ -26,6 +28,7 @@ h2 {
   margin: 10px 0;
 }
 
+/* Start Button */
 #start {
   font-size: 30px;
   cursor: pointer;
@@ -43,26 +46,29 @@ h2 {
   background-color: #ffdd33;
 }
 
+/* Timer display */
 #timer {
   color: white;
 }
 
+/* Grid container */
 .grid {
-  width: 600px;
-  height: 400px;
-  display: flex;
-  flex-wrap: wrap;
+  width: 90vw;
+  max-width: 900px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
   margin: 20px auto;
-  cursor: pointer;
 }
 
+/* Hole container */
 .hole {
-  flex: 1 0 33.33%;
-  overflow: hidden;
   position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
 }
 
-/* Hole image */
+/* Hole background image */
 .hole:after {
   content: '';
   display: block;
@@ -81,19 +87,19 @@ h2 {
   position: absolute;
   width: 100%;
   height: 100%;
-  top: 100%; /* start hidden below hole */
+  top: 100%;
   background: url('https://github.com/Thinkful-Ed/js-dev-final-capstone-starter/blob/main/assets/mole.png?raw=true') bottom center no-repeat;
   background-size: 40%;
-  transition: top 0.4s ease-in-out, transform 0.4s ease-in-out;
+  transition: top 0.4s ease-in-out;
   pointer-events: auto;
   z-index: 3;
-  will-change: top, transform;
 }
 
-/* Show mole by moving it up */
+/* Show mole */
 .hole.show .mole {
   top: 0;
   transform: scale(1.1);
+  transition: top 0.4s ease-in-out, transform 0.4s ease-in-out;
 }
 
 /* Hit animation */
@@ -102,7 +108,7 @@ h2 {
   transition: transform 0.1s ease;
 }
 
-/* Hover effect */
+/* Hover interaction */
 .mole:hover {
   cursor: pointer;
   filter: brightness(1.2);
