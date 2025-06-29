@@ -103,3 +103,4 @@ document.addEventListener("DOMContentLoaded", () => {
   moles.forEach(mole => mole.addEventListener("click", whack));
   startButton.addEventListener("click", startGame);
 });
+
