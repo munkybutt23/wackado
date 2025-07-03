@@ -96,6 +96,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (gameInProgress) return; // Prevent double starts
 
     gameInProgress = true;
+    startButton.disabled = true;  // Disable start button during game
+
     score = 0;
     time = 10;
     scoreDisplay.textContent = score;
@@ -116,6 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Hide any visible mole
     holes.forEach(hole => hole.classList.remove("show"));
+    startButton.disabled = false;  // Re-enable start button
 
     alert(`Game over! Your score is ${score}`);
   }
