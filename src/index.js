@@ -10,21 +10,24 @@ document.addEventListener("DOMContentLoaded", () => {
   let score = 0;
   let moleTimer = null;
   let timer = null;
+  let gameInProgress = false;
 
   // Utility: random integer between min and max (inclusive)
   function randomInteger(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  // Set mole visibility delay by difficulty
+  // Set mole visibility delay based on difficulty
   function setDelay(difficulty) {
-    if (difficulty === "easy") return 1500;
-    if (difficulty === "normal") return 1000;
-    if (difficulty === "hard") return randomInteger(600, 1200);
-    return 1000;
+    switch (difficulty) {
+      case "easy": return 1500;
+      case "normal": return 1000;
+      case "hard": return randomInteger(600, 1200);
+      default: return 1000;
+    }
   }
 
-  // Choose a hole different from the last one
+  // Choose a random hole, different from the last one
   function chooseHole() {
     let index;
     let hole;
@@ -36,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return hole;
   }
 
-  // Show mole on chosen hole for delay then hide and call next mole
+  // Show a mole in a hole, handle scoring, and hide it after delay
   function showAndHide() {
     const difficulty = difficultySelector.value;
     const delay = setDelay(difficulty);
@@ -45,18 +48,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     hole.classList.add("show");
 
-    // Click handler that only works while mole is visible
+    // One-time click handler
     function handleClick() {
       if (!hole.classList.contains("show")) return;
 
       score++;
       scoreDisplay.textContent = score;
 
-      // Remove mole and add hit animation
-      hole.classList.remove("show");
+      // Hit animation
       mole.classList.add("hit");
       setTimeout(() => mole.classList.remove("hit"), 150);
 
+      hole.classList.remove("show");
       mole.removeEventListener("click", handleClick);
     }
 
@@ -65,32 +68,34 @@ document.addEventListener("DOMContentLoaded", () => {
     moleTimer = setTimeout(() => {
       hole.classList.remove("show");
       mole.removeEventListener("click", handleClick);
-      if (time > 0) {
+
+      if (gameInProgress && time > 0) {
         showAndHide();
       }
     }, delay);
   }
 
-  // Update timer display each second
+  // Countdown handler
   function updateTimer() {
     if (time > 0) {
       time--;
       timerDisplay.textContent = time;
     } else {
-      clearInterval(timer);
-      clearTimeout(moleTimer);
-      alert(`Game over! Your score is ${score}`);
+      endGame();
     }
   }
 
-  // Start countdown timer
+  // Start the countdown timer
   function startTimer() {
     timerDisplay.textContent = time;
     timer = setInterval(updateTimer, 1000);
   }
 
-  // Start the game
+  // Start game
   function startGame() {
+    if (gameInProgress) return; // Prevent double starts
+
+    gameInProgress = true;
     score = 0;
     time = 10;
     scoreDisplay.textContent = score;
@@ -103,6 +108,18 @@ document.addEventListener("DOMContentLoaded", () => {
     showAndHide();
   }
 
-  // Start button event listener
+  // End game logic
+  function endGame() {
+    gameInProgress = false;
+    clearInterval(timer);
+    clearTimeout(moleTimer);
+
+    // Hide any visible mole
+    holes.forEach(hole => hole.classList.remove("show"));
+
+    alert(`Game over! Your score is ${score}`);
+  }
+
+  // Button listener
   startButton.addEventListener("click", startGame);
 });
