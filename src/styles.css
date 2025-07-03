@@ -11,7 +11,7 @@ html, body {
     no-repeat center center fixed;
   background-size: cover;
   height: 100%;
-  overflow: hidden; /* Prevent scroll */
+  overflow: hidden;
 }
 
 /* Headings */
@@ -71,7 +71,7 @@ h2 {
   gap: 10px;
   width: 90vw;
   max-width: 600px;
-  height: calc(100vh - 340px); /* Dynamic height for header/buttons */
+  height: calc(100vh - 340px); /* Space reserved for header and buttons */
   margin: 10px auto;
   padding: 0 10px;
 }
@@ -104,6 +104,8 @@ h2 {
   top: 100%;
   background: url('https://github.com/Thinkful-Ed/js-dev-final-capstone-starter/blob/main/assets/mole.png?raw=true') bottom center no-repeat;
   background-size: 40%;
+  background-position: center bottom;
+  background-repeat: no-repeat;
   transition: top 0.4s ease-in-out;
   pointer-events: auto;
   z-index: 3;
@@ -128,7 +130,7 @@ h2 {
   filter: brightness(1.2);
 }
 
-/* Responsive tweaks */
+/* Responsive Tweaks for Smaller Screens */
 @media (max-height: 650px) {
   h1 {
     font-size: 48px;
@@ -138,8 +140,25 @@ h2 {
   }
   #start {
     font-size: 20px;
+    padding: 8px 16px;
   }
   .grid {
-    height: calc(100vh - 300px);
+    height: calc(100vh - 280px);
+  }
+}
+
+/* Extra Responsive: Small devices or portrait phones */
+@media (max-width: 480px) {
+  h1 {
+    font-size: 40px;
+  }
+  h2 {
+    font-size: 18px;
+  }
+  #start {
+    font-size: 18px;
+  }
+  #difficulty {
+    font-size: 16px;
   }
 }
